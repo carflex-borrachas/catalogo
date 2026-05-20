@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carflex Borrachas - Catálogo Digital</title>
+    <style>
+        :root {
+            --bg-principal: #f4f6f8;    /* Branco Gelo / Off-White */
+            --bg-card: #ffffff;         
+            --cinza-claro: #e2e8f0;     
+            --cinza-detalhe: #f1f5f9;   
+            --cor-primaria: #0f172a;    
+            --texto-secundario: #475569; 
+            --cor-whatsapp: #25D366;    
+            --cor-site: #0284c7;        
+            --largura-sidebar: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--cor-primaria);
+            display: flex;
+        }
+
+        /* ABA LATERAL (SIDEBAR) FIXA */
+        .sidebar {
+            width: var(--largura-sidebar);
+            height: 100vh;
+            background-color: var(--bg-card);
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-right: 1px solid var(--cinza-claro);
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            z-index: 100;
+        }
+
+        .logo-container {
+            max-width: 140px;
+            margin: 0 auto;
+        }
+
+        .logo-empresa {
+            width: 100%;
+            height: auto;
+        }
+
+        .sidebar-info h1 {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cor-primaria);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .sidebar-info p {
+            font-size: 11px;
+            color: var(--texto-secundario);
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* CAMPO DE BUSCA */
+        .busca-container {
+            width: 100%;
+        }
+
+        .busca-input {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid var(--cinza-claro);
+            border-radius: 20px;
+            background-color: var(--bg-principal);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .busca-input:focus {
+            border-color: var(--cor-site);
+            background-color: #ffffff;
+        }
+
+        /* MENU DE CATEGORIAS */
+        .menu-categorias {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+            overflow-y: auto;
+        }
+
+        .menu-titulo {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--texto-secundario);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .menu-link {
+            display: block;
+            padding: 10px 14px;
+            color: var(--texto-secundario);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-link:hover {
+            background-color: var(--cinza-detalhe);
+            color: var(--cor-primaria);
+            border-left-color: var(--cor-site);
+        }
+
+        /* ÁREA PRINCIPAL DOS PRODUTOS */
+        .conteudo-principal {
+            margin-left: var(--largura-sidebar);
+            flex-grow: 1;
+            padding: 40px 30px;
+            max-width: 1100px;
+        }
+
+        .pagina-catalogo {
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+            border-bottom: 2px dashed var(--cinza-claro);
+            page-break-after: always;
+        }
+
+        .pagina-catalogo:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .categoria-titulo {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--cor-primaria);
+            margin-bottom: 25px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .categoria-titulo::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--cinza-claro);
+            margin-left: 15px;
+        }
+
+        /* GRADE DE PRODUTOS */
+        .produtos-grade {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+
+        .produto-card {
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--cinza-claro);
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .produto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .produto-container-foto {
+            width: 100%; 
+            height: 160px; 
+            background-color: #ffffff; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--cinza-claro);
+            padding: 12px; 
+            cursor: zoom-in; /* Indica que a imagem é clicável para zoom */
+        }
+
+        .produto-foto {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; 
+        }
+
+        .produto-corpo {
+            padding: 18px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .produto-nome {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .produto-detalhes {
+            font-size: 12px;
+            color: var(--texto-secundario);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .produto-specs {
+            font-size: 11px;
+            color: var(--texto-secundario);
+            background-color: var(--cinza-detalhe);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 2px solid var(--cinza-claro);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .botoes-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 9px 4px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-site {
+            background-color: transparent;
+            color: var(--cor-site);
+            border: 1px solid var(--cinza-claro);
+        }
+
+        .btn-site:hover {
+            background-color: var(--cinza-detalhe);
+            border-color: var(--cor-site);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--cor-whatsapp);
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            filter: brightness(0.9);
+        }
+
+        .sem-resultados {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--texto-secundario);
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 11px;
+            color: var(--texto-secundario);
+            border-top: 1px solid var(--cinza-claro);
+            margin-top: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ESTILOS DO SISTEMA DE ZOOM (LIGHTBOX) */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.9); /* Fundo escuro semi-transparente */
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            cursor: zoom-out;
+        }
+
+        .zoom-overlay.ativo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .zoom-imagem {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 4px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            background-color: #ffffff;
+            padding: 15px;
+        }
+
+        .zoom-overlay.ativo .zoom-imagem {
+            transform: scale(1);
+        }
+
+        .zoom-fechar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #ffffff;
+            font-size: 35px;
+            font-weight: 300;
+            cursor: pointer;
+            line-height: 1;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        .zoom-fechar:hover {
+            color: #94a3b8;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: sticky;
+                top: 0;
+                left: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--cinza-claro);
+                padding: 15px;
+                gap: 12px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            }
+
+            .sidebar-info {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .logo-container {
+                max-width: 100px;
+                margin: 0;
+            }
+
+            .sidebar-info h1, .sidebar-info p, .menu-titulo {
+                display: none;
+            }
+
+            .menu-categorias {
+                flex-direction: row;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+                gap: 5px;
+            }
+
+            .menu-link {
+                padding: 6px 12px;
+                font-size: 12px;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+                background-color: var(--cinza-detalhe);
+            }
+
+            .menu-link:hover {
+                border-left-color: transparent;
+                border-bottom-color: var(--cor-site);
+            }
+
+            .conteudo-principal {
+                margin-left: 0;
+                padding: 20px 12px;
+            }
+
+            .produtos-grade {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .produto-container-foto {
+                height: 130px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .produtos-grade {
+                grid-template-columns: 1fr;
+            }
+            .produto-container-foto {
+                height: 160px; 
+            }
+        }
+
+        @media print {
+            .sidebar, .zoom-overlay { display: none; }
+            .conteudo-principal { margin-left: 0; padding: 0; }
+            .pagina-catalogo { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ABA LATERAL DE NAVEGAÇÃO -->
+    <nav class="sidebar">
+        <div class="sidebar-info">
+            <div class="logo-container">
+                <img class="logo-empresa" src="https://carflex.com.br/custom/logo.png" alt="Carflex Logo">
+            </div>
+            <h1>Catálogo Digital</h1>
+            <p>V1 - Atualizado 19/05/2026</p>
+        </div>
+
+        <!-- BUSCA INTEGRADA -->
+        <div class="busca-container">
+            <input type="text" id="campoBusca" class="busca-input" placeholder="Buscar produto...">
+        </div>
+
+        <!-- LINKS DE ATALHO -->
+        <ul class="menu-categorias">
+            <li class="menu-titulo">Categorias</li>
+            <li><a href="#categoria1" class="menu-link">Pneus e Câmaras de ar</a></li>
+            <li><a href="#categoria2" class="menu-link">Perfis e Lençóis</a></li>
+        </ul>
+    </nav>
+
+    <!-- ÁREA DOS PRODUTOS -->
+    <main class="conteudo-principal">
+
+        <div id="msgSemResultados" class="sem-resultados">
+            Nenhum produto encontrado para esta busca.
+        </div>
+
+        <!-- ================= PÁGINA 1 ================= -->
+        <div class="pagina-catalogo" id="categoria1">
+            <div class="categoria-titulo">Pneus e Câmaras de ar</div>
+
+            <div class="produtos-grade">
+                <!-- Produto 1 -->
+                 <div class="produto-card">
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://i.ibb.co/3y4QQHz2/unnamed-1.jpg.jpg" alt="Pneu 4.80/4.00x8">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 4.80/4.00x8 Nacional</div>
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>
+                            <div class="produto-specs">
+                                • Utilização: Veículos motorizados e não motorizados, tais como: carretinhas, Carrinhos de Carga, carrinhos plataforma, carrinhos de praia em geral, miniveículos, parapentes motorizados, paragliders motorizados, asa deltas motorizados.<br>
+                                • Peso: 1,970 Kg<br>
+                                • Carga Max: 485 Kg (até 8 km/h)<br>
+                                • Carga Max. 435 KG (de 8 km/h até 16km/h)<br>
+                                • Carga Max. 345 kg (de 16 km/h até 24 km/h)<br>
+                                • Carga Max. 220 kg (de 24 km/h até 40 km/h)<br>
+                                • Lonas: 4<br>
+                                • Pressão Máxima Sugerida (PSI ou LB): 40<br>
+                                • Comprimento: 380 mm<br>
+                                • Altura: 380 mm<br>
+                                • Largura: 90 mm<br>
+
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga-480400-8/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%Pneu%20400x8%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://i.ibb.co/Cshx4vZP/unnamed.jpg" alt="Pneu 3.50x8">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 3.50x8 Nacional</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Pneu de uso industrial<br>
+                                • Capacidade de carga: 200Kg<br>
+                                • Pressão Recomendada: 35lbs<br>
+                                • Obs: é preciso verificar a pressão e calibrar semanalmente mantendo sempre a pressão correta, pois o uso com baixa pressão causa danos (cortes laterais) ao pneu que não são cobertos por garantia.<br>
+                                • Utilizado em carrinhos plataforma, carrinhos de mão, carrinhos de lixo, etc<br>
+                                • Indicado somente para tração manual<br>
+                                • Velocidade máxima: 8Km/h<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga-350x8/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Pneu%20350x8%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                                                <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200117141046_1_D.webp" alt="Pneu 3.25x8">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 3.25x8 Nacional</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Pneu de uso industrial<br>
+                                • 2 Lonas<br>
+                                • Peso máximo permitido: 150 KG<br>
+                                • Indicado somente para tração manual<br>
+                                • Velocidade máxima: 8Km/h<br>
+                                • Pressão: 25 PSI<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga-325x8/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Pneu%20325x8%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+
+                                <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200113124711_9554990446_D.webp" alt="Pneu 3.25x6">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 3.25x6 Nacional</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Pneu de uso industrial<br>
+                                • 4 Lonas<br>
+                                • Diâmetro Externo: 35 CM<br>
+                                • Diâmetro Interno/Aro: 15,5 CM<br>
+                                • Peso máximo permitido: 136 KG<br>
+                                • Indicado somente para tração manual<br>
+                                • Velocidade máxima: 8Km/h<br>
+                                • Pressão: 29 PSI<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga-325x6/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Pneu%20325x6%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                                <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200115175602_4981995019_D.webp" alt="Pneu 3.50x4">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 3.50x4 Nacional</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Pneu de uso industrial<br>
+                                • 4 Lonas<br>
+                                • Peso máximo permitido: 100 KG<br>
+                                • Indicado somente para tração manual<br>
+                                • Velocidade máxima: 8Km/h<br>
+                                • Pressão: 25 PSI<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga--410350x4/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Pneu%20350x4%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://i.ibb.co/4hWWQWT/Gemini-Generated-Image-7s8qmq7s8qmq7s8q.png" alt="Pneu 2.50x4">
+                    </div>
+                <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Pneu 2.50x4 Nacional</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Pneu de uso industrial<br>
+                                • 4 Lonas<br>
+                                • Peso máximo permitido: 100 KG<br>
+                                • Indicado somente para tração manual<br>
+                                • Velocidade máxima: 8Km/h<br>
+                                • Pressão: 25 PSI<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/pneu-para-carrinhos-de-carga-250x4/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Pneu%20250x4%20Nacional" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200117145429_1000000_D.webp" alt="Pneu 4.00x8">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Camara de ar 4.80/4.00x8</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Câmara para o pneu 4.80/4.00x8<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br" target="_blank" class="btn btn-site">Indisponivel</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Camara%20400x8" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200117145429_1000000_D.webp" alt="Pneu 3.50x8">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Camara de ar 3.50x8</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Câmara para o pneu 3.50x8<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/camara-de-ar-350x8-carrinho-de-carga/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Camara%20350x8" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="produto-card">
+                    <!-- Evento onclick adicionado na div da foto -->
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="https://cdnhuawei.lojavirtuolpro.com/carflexborrachas/produto/20200117151016_3304996696_D.webp" alt="Pneu 3.50x6">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Camara de ar 3.50x6</div>    
+                            <p class="produto-detalhes">Imagem meramente ilustrativa</p>                            
+                            <div class="produto-specs">
+                                • Câmara para o pneu 3.50x6<br>
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://carflex.com.br/camara-de-ar-350x6/p" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Camara%20350x6" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- ================= FIM DA PÁGINA 1 ================= -->
+
+
+        <!-- ================= PÁGINA 2 ================= -->
+        <div class="pagina-catalogo" id="categoria2">
+            <div class="categoria-titulo">Pág 2 // Perfis e Lençóis de Borracha</div>
+
+            <div class="produtos-grade">
+                <!-- Produto 3 -->
+                <div class="produto-card">
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="LINK_DA_FOTO_AQUI.jpg" alt="Lençol de Borracha">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Lençol de Borracha Industrial</div>
+                            <p class="produto-detalhes">Utilizado para revestimentos de bancadas, isolamentos e juntas de vedação.</p>
+                            <div class="produto-specs">
+                                • Nitrílica, Neoprene ou EPDM<br>
+                                • Diversas espessuras
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://www.carflex.com.br/MUDAR_PARA_LINK_DO_PRODUTO" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Lençol%20Borracha" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produto 4 -->
+                <div class="produto-card">
+                    <div class="produto-container-foto" onclick="abrirZoom(this)">
+                        <img class="produto-foto" src="LINK_DA_FOTO_AQUI.jpg" alt="Perfis de Vedação">
+                    </div>
+                    <div class="produto-corpo">
+                        <div>
+                            <div class="produto-nome">Perfis de Vedação</div>
+                            <p class="produto-detalhes">Perfis quadrados, redondos ou em 'U' para vedação de portas e contêineres.</p>
+                            <div class="produto-specs">
+                                • Esponjosos ou maciços<br>
+                                • Sob medida para projetos
+                            </div>
+                        </div>
+                        <div class="botoes-grupo">
+                            <a href="https://www.carflex.com.br/MUDAR_PARA_LINK_DO_PRODUTO" target="_blank" class="btn btn-site">Ver no Site</a>
+                            <a href="https://wa.me/551126948161?text=Olá%20Carflex!%20Cotação:%20Perfis%20Vedação" target="_blank" class="btn btn-whatsapp">Orçamento</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ================= FIM DA PÁGINA 2 ================= -->
+
+        <!-- RODAPÉ -->
+        <footer>
+            <p><strong>CARFLEX BORRACHAS</strong></p>
+            <p>Qualidade, Flexibilidade e Soluções em Borracha</p>
+            <p style="margin-top: 10px; color: #94a3b8;">www.carflex.com.br</p>
+        </footer>
+
+    </main>
+
+    <!-- ESTRUTURA HTML DO ZOOM (ESCONDIDA POR PADRÃO) -->
+    <div id="zoomOverlay" class="zoom-overlay" onclick="fecharZoom()">
+        <span class="zoom-fechar">&times;</span>
+        <img id="zoomImagem" class="zoom-imagem" src="" alt="Imagem Ampliada">
+    </div>
+
+    <!-- SCRIPTS (BUSCA E ZOOM) -->
+    <script>
+        // SCRIPT DO ZOOM
+        function abrirZoom(elementoContainer) {
+            const tagImagemOriginal = elementoContainer.querySelector('.produto-foto');
+            const overlay = document.getElementById('zoomOverlay');
+            const imagemAmpliada = document.getElementById('zoomImagem');
+            
+            // Copia o link da foto do card para a janela flutuante
+            imagemAmpliada.src = tagImagemOriginal.src;
+            imagemAmpliada.alt = tagImagemOriginal.alt;
+            
+            // Ativa o visualizador
+            overlay.classList.add('ativo');
+        }
+
+        function fecharZoom() {
+            const overlay = document.getElementById('zoomOverlay');
+            overlay.classList.remove('ativo');
+        }
+
+        // SCRIPT DA BUSCA
+        document.getElementById('campoBusca').addEventListener('input', function(e) {
+            const termoBusca = e.target.value.toLowerCase().trim();
+            const paginas = document.querySelectorAll('.pagina-catalogo');
+            const msgSemResultados = document.getElementById('msgSemResultados');
+            let totalProdutosVisiveis = 0;
+
+            paginas.forEach(pagina => {
+                const cards = pagina.querySelectorAll('.produto-card');
+                let produtosVisiveisNaPagina = 0;
+
+                cards.forEach(card => {
+                    const nome = card.querySelector('.produto-nome').textContent.toLowerCase();
+                    const detalhes = card.querySelector('.produto-detalhes').textContent.toLowerCase();
+                    const specs = card.querySelector('.produto-specs').textContent.toLowerCase();
+
+                    if (nome.includes(termoBusca) || detalhes.includes(termoBusca) || specs.includes(termoBusca)) {
+                        card.style.display = 'flex';
+                        produtosVisiveisNaPagina++;
+                        totalProdutosVisiveis++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (produtosVisiveisNaPagina === 0 && termoBusca !== '') {
+                    pagina.style.display = 'none';
+                } else {
+                    pagina.style.display = 'block';
+                }
+            });
+
+            if (totalProdutosVisiveis === 0 && termoBusca !== '') {
+                msgSemResultados.style.display = 'block';
+            } else {
+                msgSemResultados.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
